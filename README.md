@@ -1,28 +1,32 @@
 # Synopsis
-Git Auto Deployment on dedicated server
+Git Auto Deployment on dedicated server.
 # Setting up your project with git
 1. Create your project with the following architecture :
-YOUR_PROJECT_PATH
-	/code
+	```
+	YOUR_PROJECT_PATH
+	- /code
+	```
 	
-2. Navigate into YOUR_PROJECT_PATH and clone your repository with --mirror option
+2. Navigate into *YOUR_PROJECT_PATH* and clone your repository with **--mirror** option
 	```
  	ls YOUR_PROJECT_PATH
  	git clone --mirror https://github.com/apalette/git-auto-deploy.git
  	```
  		
-3. Rename the repository copy as "repo.git" and navigate into it
-	Now YOUR_PROJECT_PATH must contain 2 folders :
+3. Rename the repository copy as *repo.git* and navigate into it
+	- Now YOUR_PROJECT_PATH must contain 2 folders :
+	```
 		- code
 		- repo.git 
+	```
 		
-4. Get code latest copy and set it into code
+4. Get code latest copy and set it into code with git
 	```
 	GIT_WORK_TREE=YOUR_PROJECT_PATH/code git checkout -f
 	```
 		
 # Setting up auto-deployment
-1. Install git-auto-deploy script on the same server and configure "/www" path as DocumentRoot
+1. Install git-auto-deploy script on the same server and configure *www* path as **DocumentRoot**
 	```
 	<VirtualHost *:80>
 	     ServerName deploy.mywebsite.com
