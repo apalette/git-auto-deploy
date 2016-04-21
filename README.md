@@ -1,4 +1,5 @@
 # Synopsis
+
 Git Auto Deployment on dedicated server.
 # Setting up your project with git
 1. Create your project on you server with the following architecture :
@@ -83,6 +84,7 @@ Git Auto Deployment on dedicated server.
 	```
 	YOUR_PROJECT_PATH:YOUR_BRANCH_NAME
 	```
+
 # Setting up cron task
 The cron task will check *YOUR_DEPLOY_PATH/todeploy* file content regularly and will update your project code automatically foreach line in this file.
 1. Edit *YOUR_DEPLOY_PATH/scripts/deploy.sh* and replace "YOUR_DEPLOY_PATH" with your own value at line 2
@@ -91,6 +93,11 @@ The cron task will check *YOUR_DEPLOY_PATH/todeploy* file content regularly and 
 * * * * * bash YOUR_DEPLOY_PATH/scripts/deploy.sh 
 ```
 This will check the *YOUR_DEPLOY_PATH/todeploy* file every minute
+
+# Accessing with SSH key
+If your git repository is private on the remote server, you must use an SSH key
+- See https://confluence.atlassian.com/bitbucket/set-up-ssh-for-git-728138079.html for Bitbucket
+- see https://help.github.com/articles/generating-an-ssh-key/ for Github
 
 # Contributors
 https://github.com/apalette
