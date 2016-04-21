@@ -10,7 +10,7 @@ Git Auto Deployment on dedicated server.
 2. Navigate into *YOUR_PROJECT_PATH* and clone your repository with **--mirror** option
 	```
  	ls YOUR_PROJECT_PATH
- 	git clone --mirror https://github.com/apalette/git-auto-deploy.git
+ 	git clone --mirror https://github.com/YOUR_REPOSITORY_PATH
  	```
  		
 3. Rename the repository copy as *repo.git* and navigate into it
@@ -20,7 +20,7 @@ Git Auto Deployment on dedicated server.
 		- repo.git 
 	```
 		
-4. Get code latest copy and set it into code with git
+4. Get repository latest copy and update */code* with this git command
 	```
 	GIT_WORK_TREE=YOUR_PROJECT_PATH/code git checkout -f
 	```
@@ -35,20 +35,53 @@ Git Auto Deployment on dedicated server.
 	</VirtualHost>
 	```
 
-2. Edit config.php with allowed IPs and create a key for your project
+2. Edit *config.php* with allowed IPs and **create a random key** for your project
+	- Allowed IPs depend on which git server you will use to configure Webhooks (Github, Bitbucket, your own...)
+	 - See https://blog.bitbucket.org/2015/06/24/the-new-bitbucket-webhooks/ for how to use webhooks in Bitbucket
+	 - See https://developer.github.com/webhooks/creating/ for how to use webhooks in Github
 	```
-	<?php 
+	<?php
+	/**
+	 * Set allowed IP here
+	 */
 	define ('DEPLOY_IPS', serialize(array(
 		/**
-		 * Bitbucket
+		 * Localhost
 		 */
-		'131.103.20.160/27',
+		 '::1',
+	
+		/**
+		 * Bitbucket Webhooks
+		 */
+		/*'131.103.20.160/27',
 	    '165.254.145.0/26',
-		'104.192.143.0/24'
+		'104.192.143.0/24',*/
+		
+		/**
+		 * Github Webhooks
+		 */
+		 //'192.30.252.0/22'
 	)));
-	?>
+	
+	/**
+	 * The key passed as parameter into webhook url allows you to specify which repository must be updated
+	 * ex : Use http://deploy.yoursite.com/?k=YOUR_RANDOM_KEY as webhook url will update files into YOUR_PROJECT_PATH/code/ when new code is pushed into YOUR_BRANCH_NAME 
+	 * You can call this url manually first to make sure that all is ok
+	 * @see https://blog.bitbucket.org/2015/06/24/the-new-bitbucket-webhooks/ for how to use webhooks in Bitbucket
+	 * @see https://developer.github.com/webhooks/creating/ for how to use webhooks in Github
+	 */
+	define ('DEPLOY_KEYS', serialize(array(
+		'YOUR_RANDOM_KEY' => array(
+			'path' => 'YOUR_PROJECT_PATH',
+			'branch' => 'YOUR_BRANCH_NAME'
+		)
+	)));
 	```
-
+3. Check *YOUR_DEPLOY_PATH/todeploy* file permissions (It must be writable) then call http://deploy.yoursite.com/?k=YOUR_RANDOM_KEY (Pay attention to the IP)
+	- The YOUR_DEPLOY_PATH/todeploy file must contains this line :
+	```
+	YOUR_PROJECT_PATH:YOUR_BRANCH_NAME
+	```
 
 # Contributors
 https://github.com/apalette

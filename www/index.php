@@ -7,15 +7,26 @@ require_once CONFIG_PATH;
 // Check IP
 $allowed = false;
 $allowed_ips = unserialize(DEPLOY_IPS);
-$ip = ip2long($_SERVER['REMOTE_ADDR']);
+$ip = $_SERVER['REMOTE_ADDR'];
+$ip_long = ip2long($ip);
 $i = 0;
 while (! $allowed && ($i < count($allowed_ips))) {
 	list ($subnet, $bits) = explode('/', $allowed_ips[$i]);
-	$subnet = ip2long($subnet);
-	$mask = -1 << (32 - $bits);
-	$subnet &= $mask;
-	if (($ip & $mask) == $subnet) {
-		$allowed = true;
+	
+	// Simple IP
+	if (! $bits) {
+		if ($allowed_ips[$i] == $ip) {
+			$allowed = true;
+		}
+	}
+	// IP Range
+	else {
+		$subnet = ip2long($subnet);
+		$mask = -1 << (32 - $bits);
+		$subnet &= $mask;
+		if (($ip_long & $mask) == $subnet) {
+			$allowed = true;
+		}
 	}
 	$i++;
 }
